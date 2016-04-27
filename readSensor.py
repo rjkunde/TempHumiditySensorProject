@@ -2,7 +2,7 @@ import sys
 import Adafruit_DHT
 
 # Specify AM203 Sensor on Raspberry Pi GPIO pin #4 (Physical Pin 7)
-sensor = '2302'
+sensor = Adafruit_DHT.AM2302
 pin = '4'
 
 # Attempt to read sensor.  Uses read_retry method, trying up to 15 times. 
