@@ -15,9 +15,10 @@ tempFahrenheit = temperature * 9/5.0 + 32
 # Check for valid inputs before displaying results
 # Print result to screen
 if humidity is not None and temperature is not None and tempFahrenheit is not None:
-    print('Temp Celsius = {0:0.1f} degrees'.format(temperature))
-    print('Temp Fahrenheit = {0:0.1f}  degrees'.format(tempFahrenheit))
-    print('Relative Humidity = {1:0.1f}%'.format(humidity))
+    print('Temp Celsius = {0:0.1f} degrees  \nTemp Fahrenheit = {1:0.1f}  degrees \nRelative Humidity = {2:0.1f}%'.format(temperature, tempFahrenheit, humidity))
+    #print('Temp Celsius = {0:0.1f} degrees'.format(temperature))
+    #print('Temp Fahrenheit = {0:0.1f}  degrees'.format(tempFahrenheit))
+    #print('Relative Humidity = {0:0.1f}%'.format(humidity))
 else:
     print('Failed to get reading. Try again!')
     sys.exit(1)
