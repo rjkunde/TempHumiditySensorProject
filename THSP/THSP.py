@@ -1,5 +1,9 @@
 ﻿import sys
 import Adafruit_DHT
+import THSP_Functions
+
+#TODO:
+# Read/Parse config.ini, and store variables.
 
 # Specify AM203 Sensor on Raspberry Pi GPIO pin #4 (Physical Pin 7)
 sensor = Adafruit_DHT.AM2302
@@ -7,10 +11,10 @@ pin = '4'
 
 # Attempt to read sensor.  Uses read_retry method, trying up to 15 times. 
 # Store results as variables.
-humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+# humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
 # Convert celsius temperature to Fahrenheit
-tempFahrenheit = temperature * 9/5.0 + 32 
+# tempFahrenheit = temperature * 9/5.0 + 32 
 
 # Check for valid inputs before displaying results
 # Print result to screen
