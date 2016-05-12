@@ -2,24 +2,8 @@
 import Adafruit_DHT
 import THSP_Functions
 
-#TODO:
-# Read/Parse config.ini, and store variables.
-
-# Specify AM203 Sensor on Raspberry Pi GPIO pin #4 (Physical Pin 7)
-sensor = Adafruit_DHT.AM2302
-pin = '4'
-
-# Attempt to read sensor.  Uses read_retry method, trying up to 15 times. 
-# Store results as variables.
-# humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-
-# Convert celsius temperature to Fahrenheit
-# tempFahrenheit = temperature * 9/5.0 + 32 
-
-# Check for valid inputs before displaying results
-# Print result to screen
-if humidity is not None and temperature is not None and tempFahrenheit is not None:
-    print('Temperature Celsius: {0:0.1f} degrees  \nTemperature Fahrenheit: {1:0.1f} degrees \nRelative Humidity: {2:0.1f}%'.format(temperature, tempFahrenheit, humidity))
-else:
-    print('Failed to get reading. Try again!')
-    sys.exit(1)
+print('Relative Humidity: {2:0.1f}%'.format(THSP_Functions.getHumidity))
+print('Temperature Celsius: {0:0.1f} degrees'.format(THSP_Functions.getTempCelsius))
+print('Temperature Fahrenheit: {1:0.1f} degrees'.format(THSP_Functions.getTempFarenheit))
+print('Relative Humidity: {2:0.1f}%'.format(THSP_Functions.getTempHumidity))
+print('Temperature Celsius: {0:0.1f} degrees  \nTemperature Fahrenheit: {1:0.1f} degrees \nRelative Humidity: {2:0.1f}%'.format(THSP_Functions.getTempCelsius, THSP_Functions.getTempFarenheit, THSP_Functions.getTempHumidity))

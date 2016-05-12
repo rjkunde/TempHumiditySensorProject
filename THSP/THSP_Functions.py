@@ -4,48 +4,75 @@ import datetime
 import sqlite3
 import os
 import glob
+import configparser
 
-# Add explanation comment    
+# Read ./config.ini file
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from configparser import ConfigParser
+
+# Instantiate
+config = ConfigParser()
+# Read config.ini
+config.read('config.ini')
+
+# Global variable 
+errorState = None
+
+# Specify AM203 sensor on Raspberry Pi GPIO pin #4 (physical pin 7)
+# Detecting Pi version / beaglebone is handled by Adafruit DHT library
+sensor = Adafruit_DHT.AM2302
+pin = '4'
+   
 def getTempFarenheit():
+    global errorState
+    # Poll sensor, obtain humidity and temperature
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     if humidity is not None and temperature is not None:
-        #TODO Get Temp
-        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-        # Convert celsius temperature to Fahrenheit
+        # Convert Celsius Temperature to Fahrenheit
         tempFahrenheit = temperature * 9/5.0 + 32
+        # Reset errorState
+        errorState = None
     else:
-        errorState = 1
+        errorState = 'Failed to obtain temperature in farenheit; humididty or temperature are NULL'
         return errorState
     return tempFahrenheit
 
-# Add explanation comment
 def getTempCelsius():
+    global errorState
     if humidity is not None and temperature is not None:
-        #TODO Get Temp
+        # Poll sensor, obtain humidity and temperature
         humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     else:
-        errorState = 1
+        errorState = 'Failed to obtain temperature in celsius; humidity or temperature are NULL'
         return errorState
-    return temperature
+    return tempCelsius
 
-# Add explanation comment
 def getHumidity():
+    global errorState
     if humidity is not None and temperature is not None:
-        #TODO Get Humididty
+        # Poll sensor, obtain humidity and temperature
         humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     else:
-        errorState = 1
+        errorState = 'Failed to obtain humidity; humidity or temperature are NULL'
         return errorState
     return humidity
 
-# Add explanation comment
 def getTempHumidity():
+    global errorState
     if humidity is not None and temperature is not None:
-        #TODO Get Humididty
+         # Poll sensor, obtain humidity and temperature
         humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+        # Convert celsius to farenheit
+        tempFahrenheit = temperature * 9/5.0 + 32
+        # Change var name for clarity
+        tempCelsius = temperature
+        tempHumidity = humidity, tempCelsius, tempFahrenheit
     else:
-        errorState = 1
+        errorState = 'Failed to obtain temperature and humidity; humidity or temperature are NULL'
         return errorState
-    return humidity, temperature
+    return tempHumidity
 
 # Add explanation comment
 def storeLocalDB():
