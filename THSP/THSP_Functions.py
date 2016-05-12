@@ -35,7 +35,7 @@ def getTempFarenheit():
         # Reset errorState
         errorState = None
     else:
-        errorState = 'Failed to obtain temperature in farenheit; humididty or temperature are NULL'
+        errorState = 'Error in GetTempFahrenheit: Failed to obtain temperature in farenheit; humididty or temperature are NULL'
         return errorState
     return tempFahrenheit
 
@@ -45,34 +45,38 @@ def getTempCelsius():
         # Poll sensor, obtain humidity and temperature
         humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     else:
-        errorState = 'Failed to obtain temperature in celsius; humidity or temperature are NULL'
+        errorState = 'Error in getTempCelsius: Failed to obtain temperature in celsius; humidity or temperature are NULL'
         return errorState
     return tempCelsius
 
 def getHumidity():
     global errorState
+    # Poll sensor, obtain humidity and temperature
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     if humidity is not None and temperature is not None:
-        # Poll sensor, obtain humidity and temperature
-        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+        return humidity
     else:
-        errorState = 'Failed to obtain humidity; humidity or temperature are NULL'
+        errorState = 'Error in getHumidity: Failed to obtain humidity; humidity or temperature are NULL'
         return errorState
-    return humidity
 
-def getTempHumidity():
+def getAllStats():
     global errorState
-    if humidity is not None and temperature is not None:
-         # Poll sensor, obtain humidity and temperature
-        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+    # Poll sensor, obtain humidity and temperature
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+    if humidity is not None and temperature is not None: 
         # Convert celsius to farenheit
         tempFahrenheit = temperature * 9/5.0 + 32
         # Change var name for clarity
         tempCelsius = temperature
-        tempHumidity = humidity, tempCelsius, tempFahrenheit
+        allStats = humidity, tempCelsius, tempFahrenheit
     else:
-        errorState = 'Failed to obtain temperature and humidity; humidity or temperature are NULL'
+        errorState = 'Error in getAllStats: Failed to obtain temperature and humidity; humidity or temperature are NULL'
         return errorState
-    return tempHumidity
+    return allStats
+
+def getSpecificStat(desiredStat):
+    # series of if statemement to catch error, match requested stat.
+    return desiredStat
 
 # Add explanation comment
 def storeLocalDB():
