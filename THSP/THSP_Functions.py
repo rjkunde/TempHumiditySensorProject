@@ -5,6 +5,9 @@ import sqlite3
 import os
 import glob
 import configparser
+import logging
+from logging.handlers import RotatingFileHandler
+import time
 
 # Read ./config.ini file
 try:
@@ -12,7 +15,7 @@ try:
 except ImportError:
     from configparser import ConfigParser
 
-# Instantiate
+# Instantiate ConfigParser
 config = ConfigParser()
 # Read config.ini
 config.read('config.ini')
@@ -35,19 +38,20 @@ def getTempFarenheit():
         # Reset errorState
         errorState = None
     else:
-        errorState = 'Error in GetTempFahrenheit: Failed to obtain temperature in farenheit; humididty or temperature are NULL'
+        errorState = 'Error in GetTempFahrenheit(): Failed to obtain temperature in farenheit; humidity or temperature are NULL'
         return errorState
     return tempFahrenheit
 
 def getTempCelsius():
     global errorState
+    # Poll sensor, obtain humidity and temperature
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     if humidity is not None and temperature is not None:
-        # Poll sensor, obtain humidity and temperature
-        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+        tempCelsius = temperature
+        return tempCelsius    
     else:
-        errorState = 'Error in getTempCelsius: Failed to obtain temperature in celsius; humidity or temperature are NULL'
+        errorState = 'Error in getTempCelsius(): Failed to obtain temperature in celsius; humidity or temperature are NULL'
         return errorState
-    return tempCelsius
 
 def getHumidity():
     global errorState
@@ -56,7 +60,7 @@ def getHumidity():
     if humidity is not None and temperature is not None:
         return humidity
     else:
-        errorState = 'Error in getHumidity: Failed to obtain humidity; humidity or temperature are NULL'
+        errorState = 'Error in getHumidity(): Failed to obtain humidity; humidity or temperature are NULL'
         return errorState
 
 def getAllStats():
@@ -70,13 +74,48 @@ def getAllStats():
         tempCelsius = temperature
         allStats = humidity, tempCelsius, tempFahrenheit
     else:
-        errorState = 'Error in getAllStats: Failed to obtain temperature and humidity; humidity or temperature are NULL'
+        errorState = 'Error in getAllStats(): Failed to obtain temperature and humidity; humidity or temperature are NULL'
         return errorState
     return allStats
 
 def getSpecificStat(desiredStat):
-    # series of if statemement to catch error, match requested stat.
-    return desiredStat
+    global errorState
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+    if humidity is not None and temperature is not None:
+        tempFahrenheit = temperature * 9/5.0 + 32
+        # series of if statemement to catch error, match requested stat.
+        if(desiredStat == tempFahrenheit):
+            desiredStat = tempFahrenheit
+        elif(desiredStat == tempCelsius):
+            desiredStat = temperature
+        elif(desiredStat == humidity):
+            desiredStat = humidity
+        else:
+            errorState = 'Error in getSpecificStat(): Invalid input to function; must be tempFahrenheit, tempCelsius, or humidity'
+            return errorState
+        return desiredStat
+    else:
+        errorState = 'Error in getSpecificStat(): Failed to obtain temperature and humidity; humidity or temperature are NULL'
+def logHandler(errorState):
+    logFormatter = logging.Formatter        
+    logging.basicConfig(filename=THSPLog.log, level="info", format='%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
+    logFile = '/logs/THSP.log'
+
+    # See: http://www.blog.pythonlibrary.org/2012/08/02/python-101-an-intro-to-logging/
+
+    # 5MB Log Size
+    my_handler = RotatingFileHandler(logFile, mode='a', maxBytes=5*1024*1024, backupCount=2, encoding=None, delay=0)
+
+    my_handler.setFormatter(log_formatter)
+    my_handler.setLevel(logging.INFO) # can adjust logging level here
+
+    app_log = logging.getLogger('root')
+    app_log.setLevel(logging.INFO)
+
+    app_log.addHandler(my_handler)
+
+    while True:
+        app_log.info("data")
 
 # Add explanation comment
 def storeLocalDB():
