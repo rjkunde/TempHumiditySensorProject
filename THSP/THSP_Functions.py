@@ -72,7 +72,7 @@ def getAllStats():
         tempFahrenheit = temperature * 9/5.0 + 32
         # Change var name for clarity
         tempCelsius = temperature
-        allStats = humidity, tempCelsius, tempFahrenheit
+        allStats = tempFahrenheit, tempCelsius, humidity 
     else:
         errorState = 'Error in getAllStats(): Failed to obtain temperature and humidity; humidity or temperature are NULL'
         return errorState
@@ -81,14 +81,14 @@ def getAllStats():
 def getSpecificStat(desiredStat):
     global errorState
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+    tempFahrenheit = temperature * 9/5.0 + 32
     if humidity is not None and temperature is not None:
-        tempFahrenheit = temperature * 9/5.0 + 32
-        # series of if statemement to catch error, match requested stat.
-        if(desiredStat == tempFahrenheit):
+                # series of if statemement to catch error, match requested stat.
+        if(desiredStat == 'tempFahrenheit'):
             desiredStat = tempFahrenheit
-        elif(desiredStat == tempCelsius):
+        elif(desiredStat == 'tempCelsius'):
             desiredStat = temperature
-        elif(desiredStat == humidity):
+        elif(desiredStat == 'humidity'):
             desiredStat = humidity
         else:
             errorState = 'Error in getSpecificStat(): Invalid input to function; must be tempFahrenheit, tempCelsius, or humidity'

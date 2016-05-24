@@ -3,67 +3,88 @@ import Adafruit_DHT
 import THSP_Functions
 
 def main():
+   
+    print
+    print
+    print 'THSP_Functions Unit Tests'
+    print
+    print
+
     testFarenheight()
-    testHumidity()
     testCelsius()
+    testHumidity()
     testAllStats()
     testSpecificStat()
 
 def testFarenheight():
-    print ('Testing THSP Function getTempFarenheit')
+    print 'Testing THSP_Function getTempFarenheit():'
     tempFarenheight = THSP_Functions.getTempFarenheit()
     if tempFarenheight is not None:
-        print ('Test Passed! The sensor value is: ', tempFarenheight)
+        print 'Test PASSED! The sensor value is: ', tempFarenheight
+        print
     else:
-        print ('Test Failed!, the sensor value returned was: ', tempFarenheight)    
-
+        print 'Test FAILED!, the sensor value returned was: ', tempFarenheight
+        print
+   
 def testCelsius():
-    print ('Testing THSP Function getTempCelsius')
+    print 'Testing THSP_Function getTempCelsius():'
     tempCelsius = THSP_Functions.getTempCelsius()
     if tempCelsius is not None:
-        print ('Test Passed! The sensor value is: ', tempCelsius)
+        print 'Test PASSED! The sensor value is: ', tempCelsius
+        print
     else:
-        print ('Test Failed!, the sensor value returned was: ', tempCelsius)
+        print 'Test FAILED!, the sensor value returned was: ', tempCelsius
+        print
 
 def testHumidity():
-    print ('Testing THSP Function getHumidity')
+    print 'Testing THSP_Function getHumidity():'
     humidity = THSP_Functions.getHumidity()
     if humidity is not None:
-        print ('Test Passed! The sensor value is: ', humidity)
+        print 'Test PASSED! The sensor value is: ', humidity
+        print
     else:
-        print ('Test Failed!, the sensor value returned was: ', humidity)
+        print 'Test FAILED!, the sensor value returned was: ', humidity
+        print
 
 def testAllStats():
-    print ('Testing THSP Function getAllStats')
+    print 'Testing THSP_Function getAllStats():'
     allStats = THSP_Functions.getAllStats()
     if allStats is not None:
-        print ('Test Passed! The sensor value is: ', allStats)
+        print 'Test PASSED! The sensor value is: ', allStats
+        print
     else:
-        print ('Test Failed!, the sensor value returned was: ', allStats)
+        print 'Test FAILED!, the sensor value returned was: ', allStats
+        print
 
-def testSpecificStat():
-    print ('Testing THSP Function getSpecificStat, this may take a while...\n')
-    
-    print('Testing THSP Function getSpecificStat w/ parameter: tempFarenheight')
-    tempFahrenheit  = THSP_Functions.getSpecificStat(tempFahrenheit)
+def testSpecificStat():  
+    print 'Testing THSP_Function getSpecificStat() w/ parameter: tempFarenheight'
+    tempFahrenheit  = THSP_Functions.getSpecificStat('tempFahrenheit')
     if tempFahrenheit is not None:
-        print ('testSpecicStat test for tempFahrenheit passed!, with value:', tempFahrenheit)
+        print 'Test for tempFahrenheit PASSED!, with value: ', tempFahrenheit
+        print
     else:
-        print ('testSpecicStat test for tempFahrenheit failed!, with value:', tempFahrenheit)
+        print 'Test for tempFahrenheit FAILED!, with value: ', tempFahrenheit
+        print
 
-    print('Testing THSP Function getSpecificStat w/ parameter: tempCelsius')
-    tempCelsius  = THSP_Functions.getSpecificStat(tempCelsius)
+    print 'Testing THSP Function getSpecificStat() w/ parameter: tempCelsius'
+    tempCelsius  = THSP_Functions.getSpecificStat('tempCelsius')
     if tempCelsius is not None:
-        print ('testSpecicStat test for tempCelsius passed!, with value:', tempCelsius)
+        print 'Test for tempCelsius PASSED!, with value: ', tempCelsius
+        print
     else:
-        print ('testSpecicStat test for tempCelsius failed, with value:', tempCelsius)
+        print 'Test for tempCelsius FAILED, with value: ', tempCelsius
+        print
 
-    print('Testing THSP Function getSpecificStat w/ parameter: humidity')
-    humidity  = THSP_Functions.getSpecificStat(humidity)
+    print 'Testing THSP Function getSpecificStat() w/ parameter: humidity'
+    humidity  = THSP_Functions.getSpecificStat('humidity')
     if humidity is not None:
-        print ('testSpecicStat test for humidity passed!, with value:', humidity)
+        print 'Test for humidity PASSED!, with value: ', humidity
+        print
+        print
     else:
-        print ('testSpecicStat test for humidity failed, with value:', humidity)
+        print 'Test for humidity FAILED, with value: ', humidity
+        print
+        print
 
 #Execute Test
 if __name__ == "__main__":
