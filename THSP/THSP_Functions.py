@@ -4,21 +4,21 @@ import datetime
 import sqlite3
 import os
 import glob
-import configparser
-import logging
-from logging.handlers import RotatingFileHandler
-import time
+# import configparser
+# import logging
+# from logging.handlers import RotatingFileHandler
+# import time
 
 # Read ./config.ini file
-try:
-    from configparser import ConfigParser
-except ImportError:
-    from configparser import ConfigParser
+#try:
+#    from configparser import ConfigParser
+#except ImportError:
+#    from configparser import ConfigParser
 
 # Instantiate ConfigParser
-config = ConfigParser()
+#config = ConfigParser()
 # Read config.ini
-config.read('config.ini')
+#config.read('config.ini')
 
 # Global variable 
 errorState = None
