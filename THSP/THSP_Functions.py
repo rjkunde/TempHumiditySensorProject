@@ -35,6 +35,7 @@ def getTempFarenheit():
     if humidity is not None and temperature is not None:
         # Convert Celsius Temperature to Fahrenheit
         tempFahrenheit = temperature * 9/5.0 + 32
+        print type(tempFahrenheit)
         # Reset errorState
         errorState = None
     else:
@@ -96,6 +97,7 @@ def getSpecificStat(desiredStat):
         return desiredStat
     else:
         errorState = 'Error in getSpecificStat(): Failed to obtain temperature and humidity; humidity or temperature are NULL'
+
 def logHandler(errorState):
     logFormatter = logging.Formatter        
     logging.basicConfig(filename=THSPLog.log, level="info", format='%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
