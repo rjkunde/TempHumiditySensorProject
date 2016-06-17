@@ -4,21 +4,10 @@ import datetime
 import sqlite3
 import os
 import glob
-# import configparser
+import ConfigParser
 # import logging
 # from logging.handlers import RotatingFileHandler
 # import time
-
-# Read ./config.ini file
-#try:
-#    from configparser import ConfigParser
-#except ImportError:
-#    from configparser import ConfigParser
-
-# Instantiate ConfigParser
-#config = ConfigParser()
-# Read config.ini
-#config.read('config.ini')
 
 # Global variable 
 errorState = None
@@ -27,7 +16,15 @@ errorState = None
 # Detecting Pi version / beaglebone is handled by Adafruit DHT library
 sensor = Adafruit_DHT.AM2302
 pin = '4'
-   
+
+def importConfig():
+    config = ConfigParser.ConfigParser()
+    config.read('config.ini')
+    print config.get('test_section','test_name')
+    print config.get('test_section','test_number')
+    print config.get('test_section','test_password')
+    
+
 def getTempFarenheit():
     global errorState
     # Poll sensor, obtain humidity and temperature
@@ -35,7 +32,8 @@ def getTempFarenheit():
     if humidity is not None and temperature is not None:
         # Convert Celsius Temperature to Fahrenheit
         tempFahrenheit = temperature * 9/5.0 + 32
-        print type(tempFahrenheit)
+
+
         # Reset errorState
         errorState = None
     else:
