@@ -3,7 +3,7 @@ import Adafruit_DHT
 import THSP_Functions
 
 def main():
-    importConfig()
+    THSP_Functions.importConfig()
     testAllSensors()
 
     

@@ -23,6 +23,8 @@ def importConfig():
     print config.get('test_section','test_name')
     print config.get('test_section','test_number')
     print config.get('test_section','test_password')
+    storedVar = config.get('test_section','test_var'
+    print storedVar
     
 
 def getTempFarenheit():
