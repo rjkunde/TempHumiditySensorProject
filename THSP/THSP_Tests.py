@@ -64,12 +64,12 @@ def testAllStats():
 def testSpecificStat():  
     print 'Testing THSP_Function getSpecificStat() w/ parameter: tempFarenheight'
     tempFahrenheit  = THSP_Functions.getSpecificStat('tempFahrenheit')
-    if tempFarenheight is not None and tempFarenheight > 30.0 and tempFarenheight < 120.0:
-        print 'Test PASSED! The sensor value is: ', tempFarenheight
+    if tempFahrenheit is not None and tempFahrenheit > 30.0 and tempFahrenheit < 120.0:
+        print 'Test PASSED! The sensor value is: ', tempFahrenheit
         print
     else:
-        print 'Test FAILED!, the sensor value returned was: ', tempFarenheight
-        print 'Sensor value must be between 30.0 and 120.0 degrees farenheight'
+        print 'Test FAILED!, the sensor value returned was: ', tempFahrenheit
+        print 'Sensor value must be between 30.0 and 120.0 degrees farenheit'
         print
 
     print 'Testing THSP Function getSpecificStat() w/ parameter: tempCelsius'

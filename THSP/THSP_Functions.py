@@ -5,11 +5,11 @@ import sqlite3
 import os
 import glob
 import ConfigParser
-# import logging
-# from logging.handlers import RotatingFileHandler
+import logging
 # import time
 
 # Global variable 
+global errorState
 errorState = None
 
 # Specify AM203 sensor on Raspberry Pi GPIO pin #4 (physical pin 7)
@@ -17,24 +17,27 @@ errorState = None
 sensor = Adafruit_DHT.AM2302
 pin = '4'
 
+def logHandler(errorState):
+    # See: http://www.blog.pythonlibrary.org/2012/08/02/python-101-an-intro-to-logging/
+    logging.basicConfig(filename='/logs/THSP.log', level=logging.INFO)
+    logging.error(errorState)
+    print "An error occured, and was logged in /logs/THSP.log"
+	
 def importConfig():
     config = ConfigParser.ConfigParser()
     config.read('config.ini')
     print config.get('test_section','test_name')
     print config.get('test_section','test_number')
     print config.get('test_section','test_password')
-    storedVar = config.get('test_section','test_var'
+    storedVar = config.get('test_section','test_var')
     print storedVar
     
-
 def getTempFarenheit():
-    global errorState
     # Poll sensor, obtain humidity and temperature
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     if humidity is not None and temperature is not None:
         # Convert Celsius Temperature to Fahrenheit
         tempFahrenheit = temperature * 9/5.0 + 32
-
 
         # Reset errorState
         errorState = None
@@ -44,7 +47,6 @@ def getTempFarenheit():
     return tempFahrenheit
 
 def getTempCelsius():
-    global errorState
     # Poll sensor, obtain humidity and temperature
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     if humidity is not None and temperature is not None:
@@ -55,7 +57,6 @@ def getTempCelsius():
         return errorState
 
 def getHumidity():
-    global errorState
     # Poll sensor, obtain humidity and temperature
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     if humidity is not None and temperature is not None:
@@ -65,7 +66,6 @@ def getHumidity():
         return errorState
 
 def getAllStats():
-    global errorState
     # Poll sensor, obtain humidity and temperature
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     if humidity is not None and temperature is not None: 
@@ -80,11 +80,10 @@ def getAllStats():
     return allStats
 
 def getSpecificStat(desiredStat):
-    global errorState
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     tempFahrenheit = temperature * 9/5.0 + 32
     if humidity is not None and temperature is not None:
-                # series of if statemement to catch error, match requested stat.
+        # series of if statemement to catch error, match requested stat.
         if(desiredStat == 'tempFahrenheit'):
             desiredStat = tempFahrenheit
         elif(desiredStat == 'tempCelsius'):
@@ -97,27 +96,6 @@ def getSpecificStat(desiredStat):
         return desiredStat
     else:
         errorState = 'Error in getSpecificStat(): Failed to obtain temperature and humidity; humidity or temperature are NULL'
-
-def logHandler(errorState):
-    logFormatter = logging.Formatter        
-    logging.basicConfig(filename=THSPLog.log, level="info", format='%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
-    logFile = '/logs/THSP.log'
-
-    # See: http://www.blog.pythonlibrary.org/2012/08/02/python-101-an-intro-to-logging/
-
-    # 5MB Log Size
-    my_handler = RotatingFileHandler(logFile, mode='a', maxBytes=5*1024*1024, backupCount=2, encoding=None, delay=0)
-
-    my_handler.setFormatter(log_formatter)
-    my_handler.setLevel(logging.INFO) # can adjust logging level here
-
-    app_log = logging.getLogger('root')
-    app_log.setLevel(logging.INFO)
-
-    app_log.addHandler(my_handler)
-
-    while True:
-        app_log.info("data")
 
 # Add explanation comment
 def storeLocalDB():
